@@ -1,0 +1,8 @@
+name = "FluidDynamics"
+uuid = "9070f504-7374-4ea0-b764-e7c0db7360cf"
+authors = ["Ugo Mire <ugomire@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
