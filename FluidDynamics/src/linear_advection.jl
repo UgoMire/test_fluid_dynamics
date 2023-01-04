@@ -30,12 +30,12 @@ function ld!(du, u, p, t)
         elseif i == p.Nx
             du[i] = -p.v / p.dx * (u[1] - u[i-1])
         else
-            du[i] = -p.v / p.dx * (u[i+1] - u[i-1])
+            du[i] = -p.v / 2p.dx * (u[i+1] - u[i-1])
         end
     end
 end
 
-function simul_ld(tmin, tmax, p::ParamsLA)
-    prob = ODEProblem(ld!, p.u0, (tmin, tmax), p)
+function simul(tl, p::ParamsLA)
+    prob = ODEProblem(ld!, p.u0, (tl[1], tl[end]), p, saveat = tl)
     return solve(prob)
 end

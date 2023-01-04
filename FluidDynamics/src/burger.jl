@@ -26,13 +26,19 @@ end
 function burger!(du, u, p, t)
     for (i, x) in enumerate(p.xl)
         if i == 1
-            du[i] = -u[i] / p.dx * (u[i+1] - u[end])
-            # du[i] = 0
+            du[i] =
+                -u[i] / p.dx * (u[i+1] - u[end]) + p.ν / p.dx^2 * (u[i+1] - 2u[i] + u[end])
         elseif i == p.Nx
-            du[i] = -u[i] / p.dx * (u[1] - u[i-1])
-            # du[i] = 0
+            du[i] = -u[i] / p.dx * (u[1] - u[i-1]) + p.ν / p.dx^2 * (u[1] - 2u[i] + u[i-1])
         else
-            du[i] = -u[i] / 2p.dx * (u[i+1] - u[i-1])
+            du[i] =
+                -(u[i+1] + u[i-1]) / 4p.dx * (u[i+1] - u[i-1]) +
+                p.ν / p.dx^2 * (u[i+1] - 2u[i] + u[i-1])
         end
     end
+end
+
+function simul(tl, p::ParamsBurger)
+    prob = ODEProblem(burger!, p.u0, (tl[1], tl[end]), p, saveat = tl, alg_hints = [:stiff])
+    return solve(prob)
 end
