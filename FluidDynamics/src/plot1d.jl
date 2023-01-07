@@ -33,22 +33,29 @@ function plot1d(sol, tl, xl)
 end
 
 function anim1d(sol, tl, xl, name = "plots/anim.mp4")
+    set_theme!(include("../theme.jl"))
+
     ul = [sol[i] for i = 1:length(sol.t)]
 
     fig = Figure()
-    ax = Axis(fig[1, 1], xlabel = L"x", ylabel = L"u(x)")
 
+    # create observables
     time_index = Observable(1)
     u = lift(time_index) do i
         ul[i]
     end
+    titlelift = lift(time_index) do i
+        t = round(tl[i], digits = 0)
+        L"t = %$t"
+    end
 
+    # create plot elements
+    ax = Axis(fig[1, 1], xlabel = L"x", ylabel = L"u(x)", title = titlelift)
     lines!(ax, xl, u)
 
+    # record animation
     record(fig, name, 1:length(sol.t)) do i
         time_index[] = i
         # autolimits!(ax)
     end
-
-    # display(fig)
 end
